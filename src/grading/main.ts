@@ -30,7 +30,7 @@ enum Grade_Type{
 }
 
 
-enum AP_Courses {
+enum AP_Course {
     Research = "Research",
     Seminar = "Seminar",
     
@@ -76,6 +76,15 @@ enum AP_Courses {
     Latin = "Latin",
     Spanish_Language_And_Culture = "Spanish Language and Culture",
     Spanish_Literature_And_Culture = "Spanish Literature and Culture",
+}
+
+enum AP_Score {
+    S_5 = "5",
+    S_4 = "4",
+    S_3 = "3",
+    S_2 = "2",
+    S_1 = "1",
+    NA = "N/A",
 }
 
 class Grading_Scale{
@@ -179,4 +188,122 @@ const GradingScales: Grading_Scale[] = [
     //     Big(4.0),
     // ),
 
+]
+
+class CollegeCredits{
+
+    constructor(
+        public name: string,
+        public APcourseTransferCredit: {apCourse: AP_Course, credit: string | null, equivalent: string | null, additionalInfo: string | null}[],
+        public minAP_Score: AP_Score,
+        public creditLimit: Big | null,
+    ){}
+
+    APcourseTransfer(apCourse: AP_Course): {apCourse: AP_Course, credit: string | null, equivalent: string | null, additionalInfo: string | null} | null{
+        for (let i = 0; i < this.APcourseTransferCredit.length; i++) {
+            if (this.APcourseTransferCredit[i].apCourse == apCourse) {
+                return this.APcourseTransferCredit[i];
+            }
+        }
+        return null;
+    }
+    APcoursesTransfer(apCourses: AP_Course[]): {apCourse: AP_Course, credit: string | null, equivalent: string | null, additionalInfo: string | null}[]{
+        let apCoursesTransfer: {apCourse: AP_Course, credit: string | null, equivalent: string | null, additionalInfo: string | null}[] = [];
+        for (let i = 0; i < apCourses.length; i++) {
+            let apCourseTransfer = this.APcourseTransfer(apCourses[i]);
+            if (apCourseTransfer != null) {
+                apCoursesTransfer.push(apCourseTransfer);
+            }
+        }
+        return apCoursesTransfer;
+    }
+}
+
+const CreditColleges: CollegeCredits[] = [
+    new CollegeCredits(
+        "Massachusetts Institute of Technology (MIT)",
+        [
+            { apCourse: AP_Course.Calculus_BC, credit: null, equivalent: "18.01", additionalInfo: null },
+            { apCourse: AP_Course.Calculus_AB, credit: null, equivalent: "18.01A/18.02A", additionalInfo: "Allows you to enroll in the accelerated Calculus Sequence." },
+
+            { apCourse: AP_Course.Physics_C_Electricity_And_Magnetism, credit: null, equivalent: "8.01", additionalInfo: "Credit granted only if a score of 5 was achieved in AP Physics C: Mechanics aswell." },
+            { apCourse: AP_Course.Physics_C_Mechanics, credit: null, equivalent: "8.01", additionalInfo: "Credit granted only if a score of 5 was achieved in AP Physics C: Electricity and Magnetism aswell." },
+            
+            { apCourse: AP_Course.Research, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "Credit granted only if a score of 5 was achieved in AP Seminar aswell. The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Seminar, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "Credit granted only if a score of 5 was achieved in AP Research aswell. The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            
+            { apCourse: AP_Course.Drawing, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Art_History, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Music_Theory, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.TwoD_Art_And_Design, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.ThreeD_Art_And_Design, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            
+            { apCourse: AP_Course.English_Literature_And_Composition, credit: "9 units of unrestricted elective credit", equivalent: "First Year Essay Evaluation (FEE)", additionalInfo: "In addition to the credit, you will be placed in the  \"CI-H/CI-HW Required\" category without the FEE. You are still required to take a (CI-HW or CI-H) Subject you first year as a part of the Communication Requirement. The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.English_Language_And_Composition, credit: "9 units of unrestricted elective credit", equivalent: "First Year Essay Evaluation (FEE)", additionalInfo: "In addition to the credit, you will be placed in the  \"CI-H/CI-HW Required\" category without the FEE. You are still required to take a (CI-HW or CI-H) Subject you first year as a part of the Communication Requirement. The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            
+            { apCourse: AP_Course.Comparative_Government_And_Politics, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.European_History, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Human_Geography, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Macroeconomics, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Microeconomics, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Psychology, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.United_States_Government_And_Politics, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.United_States_History, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.World_History_Modern, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+
+            { apCourse: AP_Course.Chinese_Language_And_Culture, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.French_Language_And_Culture, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.German_Language_And_Culture, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Italian_Language_And_Culture, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Japanese_Language_And_Culture, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Latin, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Spanish_Language_And_Culture, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+            { apCourse: AP_Course.Spanish_Literature_And_Culture, credit: "9 units of unrestricted elective credit", equivalent: null, additionalInfo: "The credit granted cannot be used to satisfy any part of the HASS Requirement." },
+
+        ],
+        AP_Score.S_5,
+        null,
+    ),
+    new CollegeCredits(
+        "University of British Columbia (UBC)",
+        [
+            { apCourse: AP_Course.TwoD_Art_And_Design, credit: "3", equivalent: "VISA 1st-year level", additionalInfo: null },
+            { apCourse: AP_Course.ThreeD_Art_And_Design, credit: "3", equivalent: "VISA 180", additionalInfo: null },
+            { apCourse: AP_Course.Art_History, credit: "3+3", equivalent: "ARTH 101 + ARTH 102", additionalInfo: null },
+            { apCourse: AP_Course.Biology, credit: "8", equivalent: "BIOL 1st-year level", additionalInfo: "Exemption from BIOL 111, BIOL 121, and BIOL 180." },
+            { apCourse: AP_Course.Calculus_AB, credit: "3", equivalent: "Math 100", additionalInfo: null }, // subscore aswell
+            { apCourse: AP_Course.Calculus_BC, credit: "3+3", equivalent: "Math 100 + Math 101", additionalInfo: null },
+            { apCourse: AP_Course.Chemistry, credit: "4", equivalent: "CHEM 121", additionalInfo: "Students entering the BASc degree will be granted an exemption from CHEM 154." },
+            { apCourse: AP_Course.Chinese_Language_And_Culture, credit: "3+3", equivalent: "CHIN 241 + CHIN 243", additionalInfo: null },
+            { apCourse: AP_Course.Computer_Science_A, credit: "3", equivalent: "CPSC 1st-year level", additionalInfo: null },
+            { apCourse: AP_Course.Computer_Science_Principles, credit: "3", equivalent: "CPSC 100", additionalInfo: null },
+            { apCourse: AP_Course.Drawing, credit: "3", equivalent: "VISA 180", additionalInfo: null },
+            { apCourse: AP_Course.Macroeconomics, credit: "3", equivalent: "ECON 102", additionalInfo: "OR ECON 1st-year level for the Bachelor of International Economics degree." },
+            { apCourse: AP_Course.Microeconomics, credit: "3", equivalent: "ECON 101", additionalInfo: "OR ECON 1st-year level for the Bachelor of International Economics degree." },
+            { apCourse: AP_Course.English_Language_And_Composition, credit: "6", equivalent: "ENGL 1st-year level", additionalInfo: "When AP English Literature and Composition & AP Language and Composition are taken together, credit is granted as ENGL 1st-year level (12)." },
+            { apCourse: AP_Course.English_Literature_And_Composition, credit: "6", equivalent: "ENGL 1st-year level", additionalInfo: "When AP English Literature and Composition & AP Language and Composition are taken together, credit is granted as ENGL 1st-year level (12)." },
+            { apCourse: AP_Course.Environmental_Science, credit: "3", equivalent: "EOSC 1st-year level", additionalInfo: null },
+            { apCourse: AP_Course.French_Language_And_Culture, credit: "3+3", equivalent: "FREN 301 + FREN 302", additionalInfo: null },
+            { apCourse: AP_Course.German_Language_And_Culture, credit: "3+3", equivalent: "GERN 301 + GERN 2nd-year level", additionalInfo: null },
+            { apCourse: AP_Course.Comparative_Government_And_Politics, credit: "3", equivalent: "POLI 220", additionalInfo: null },
+            { apCourse: AP_Course.European_History, credit: "3", equivalent: "HIST 1st-year level", additionalInfo: null },
+            { apCourse: AP_Course.United_States_History, credit: "3", equivalent: "HIST 1st-year level", additionalInfo: null },
+            { apCourse: AP_Course.Human_Geography, credit: "3+3", equivalent: "GEOG 122 + GEOG 1st-year level", additionalInfo: null },
+            { apCourse: AP_Course.Italian_Language_And_Culture, credit: "3+3", equivalent: "ITAL 201 + ITAL 202", additionalInfo: null },
+            { apCourse: AP_Course.Japanese_Language_And_Culture, credit: "3+3", equivalent: "JAPN 100 + JAPN 101", additionalInfo: null },
+            { apCourse: AP_Course.Latin, credit: "3+3", equivalent: "LATN 201 + LATN 2nd-year level", additionalInfo: null },
+            { apCourse: AP_Course.Music_Theory, credit: "6", equivalent: "MUSC 1st-year level", additionalInfo: null },
+            { apCourse: AP_Course.Physics_C_Electricity_And_Magnetism, credit: "3", equivalent: "PHYS 118", additionalInfo: null },
+            { apCourse: AP_Course.Physics_C_Mechanics, credit: "3", equivalent: "PHYS 117", additionalInfo: null },
+            { apCourse: AP_Course.Psychology, credit: "6", equivalent: "PSYC 100", additionalInfo: null },
+            { apCourse: AP_Course.Spanish_Language_And_Culture, credit: "3+3", equivalent: "SPAN 201 + SPAN 202", additionalInfo: null },
+            { apCourse: AP_Course.Spanish_Literature_And_Culture, credit: "3+3", equivalent: "SPAN 221 + SPAN 222", additionalInfo: null },
+            { apCourse: AP_Course.Statistics, credit: "3", equivalent: "STAT 200", additionalInfo: null },
+            { apCourse: AP_Course.United_States_Government_And_Politics, credit: "3", equivalent: "POLI 1st-year level", additionalInfo: null },
+            { apCourse: AP_Course.World_History_Modern, credit: "3", equivalent: "HIST 1st-year level", additionalInfo: null },
+        ],
+        AP_Score.S_4,
+        null
+    ),
+    
 ]
